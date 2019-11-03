@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
       // check whether the game is over
       if (similarityScore === password.length) {
         toggleClasses(document.getElementById('winner'), 'hide', 'show');
-        this.removeEventListener('click', updateGame);
+        document.getElementById("word-list").removeEventListener('click', updateGame);
       } else if (guessCount === 0) {
         toggleClasses(document.getElementById('loser'), 'hide', 'show');
-        this.removeEventListener('click', updateGame);
+        document.getElementById("word-list").removeEventListener('click', updateGame);
       }
     }
   }
