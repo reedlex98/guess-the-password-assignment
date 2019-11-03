@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   let wordCount = 10;
   let guessCount = 4;
   let password = '';
@@ -6,9 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const start = document.getElementById('start');
 
   const toggleClasses = (element, ...args) => {
-    for (let i = 0; i < args.length; i++) {
-      element.classList.toggle(args[i]);
-    }
+    args.forEach(className => element.classList.toggle(className))
   }
 
   const shuffle = (array) => {
@@ -18,19 +16,17 @@ document.addEventListener('DOMContentLoaded', function() {
       const idx2 = Math.floor(Math.random() * (idx1 + 1));
 
       // swap elements at idx1 and idx2
-      const temp = arrayCopy[idx1];
-      arrayCopy[idx1] = arrayCopy[idx2];
-      arrayCopy[idx2] = temp;
+      [arrayCopy[idx1], arrayCopy[idx2]] = [arrayCopy[idx2], arrayCopy[idx1]] 
     }
     return arrayCopy;
   }
 
-  const getRandomValues = (array, numberOfVals) => shuffle(array).slice(0, numberOfVals)
+  const getRandomValues = (array, numberOfVals = wordCount) => shuffle(array).slice(0, numberOfVals)
   
   const setGuessCount = (newCount) => {
     guessCount = newCount;
     document.getElementById('guesses-remaining').innerText =
-      'Guesses remaining: ' + guessCount + '.';
+      `Guesses remaining: ${guessCount}.`;
   }
 
   const compareWords = (word1, word2) => {
@@ -50,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const guess = e.target.innerText;
       const similarityScore = compareWords(guess, password);
       e.target.classList.add('disabled');
-      e.target.innerText = guess + ' --> Matching Letters: ' + similarityScore;
+      e.target.innerText = `${guess} --> Matching Letters: ${similarityScore}`;
       setGuessCount(guessCount - 1);
 
       // check whether the game is over
@@ -68,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // get random words and append them to the DOM
     const wordList = document.getElementById('word-list');
     // 'words' variable is from words.js
-    const randomWords = getRandomValues(words, wordCount); // eslint-disable-line no-undef
+    const randomWords = getRandomValues(words); // eslint-disable-line no-undef
     randomWords.forEach((word) => {
       const li = document.createElement('li');
       li.innerText = word;
@@ -83,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     wordList.addEventListener('click', updateGame);
   }
 
-  start.addEventListener('click', function() {
+  start.addEventListener('click', () => {
     toggleClasses(document.getElementById('start-screen'), 'hide', 'show');
     toggleClasses(document.getElementById('game-screen'), 'hide', 'show');
     startGame();
