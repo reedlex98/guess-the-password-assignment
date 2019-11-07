@@ -41,12 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const updateGame = () => {
-    if (d3.event.target.tagName === 'LI' && !d3.event.target.classList.contains('disabled')) {
+    const targ = d3.select(d3.event.target)
+    if (targ.node().tagName === 'LI' && !targ.classed('disabled')) {
       // grab guessed word, check it against password, update view
-      const guess = d3.event.target.innerText;
+      const guess = targ.text();
       const similarityScore = compareWords(guess, password);
-      d3.event.target.classList.add('disabled');
-      d3.event.target.innerText = `${guess} --> Matching Letters: ${similarityScore}`;
+      targ
+        .classed('disabled',true)
+        .text(`${guess} --> Matching Letters: ${similarityScore}`);
       setGuessCount(guessCount - 1);
 
       // check whether the game is over
